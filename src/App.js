@@ -1,25 +1,33 @@
-import logo from './logo.svg';
 import './App.css';
+import React, { Component } from 'react';
+import axios from 'axios';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default class App extends Component {
+  state = {
+    todos: []
+  }
+  getTodo = () => {
+    axios.get('https://jsonplaceholder.typicode.com/todos')
+    .then(res => {
+      console.log(res.data)
+      this.setState({
+        todos: res.data
+      })
+    })
+  }
+  render() {
+    const listTodos = this.state.todos.map(todo => {
+      return <li>{todo.title}</li>
+    })
+    return (
+      <div className="app">
+        <button onClick={this.getTodo}>Clique</button>
+
+        <ul>
+          {listTodos}
+        </ul>
+      </div>
+    )
+  }
 }
 
-export default App;
